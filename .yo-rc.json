@@ -1,0 +1,32 @@
+{
+  "generator-jhipster": {
+    "applicationType": "gateway",
+    "authenticationType": "jwt",
+    "baseName": "goatBotGateway",
+    "buildTool": "maven",
+    "cacheProvider": null,
+    "clientFramework": "vue",
+    "clientTestFrameworks": [],
+    "clientTheme": "none",
+    "creationTimestamp": 1762574284411,
+    "databaseType": "sql",
+    "devDatabaseType": "mssql",
+    "enableHibernateCache": null,
+    "enableTranslation": false,
+    "entities": [],
+    "feignClient": null,
+    "jhipsterVersion": "8.11.0",
+    "jwtSecretKey": "NjhhZjg2NzgxNWE4MTllYmIwNjYzNjQ4MDc2NGZmMGNmMTFlYWFhOGRjNmQ3ZGU5ZTAyNDNlODY1NGQyOGQ4NGQ2ZTk1MzcyYTE5MmIxYWJmYWFlMmEzNTE2YTliNmI1NTQwMDU3M2RkMWIyNTc5M2ZjODM3MzAyMzVjYjkyYTM=",
+    "microfrontend": true,
+    "microfrontends": [],
+    "nativeLanguage": "es",
+    "packageName": "edu.goatbot.gateway",
+    "prodDatabaseType": "mssql",
+    "reactive": true,
+    "serverPort": 8080,
+    "serviceDiscoveryType": "eureka",
+    "syncUserWithIdp": null,
+    "testFrameworks": [],
+    "withAdminUi": true
+  }
+}

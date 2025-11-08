@@ -1,0 +1,11 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: goatbotgateway
+services:
+  mssql:
+    extends:
+      file: ./mssql.yml
+      service: mssql
+  jhipster-registry:
+    extends:
+      file: ./jhipster-registry.yml
+      service: jhipster-registry
