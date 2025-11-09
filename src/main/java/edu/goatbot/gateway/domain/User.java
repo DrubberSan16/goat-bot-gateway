@@ -19,7 +19,8 @@ import org.springframework.data.relational.core.mapping.Table;
 /**
  * A user.
  */
-@Table("jhi_user")
+
+@Table(name = "jhi_user", schema = "G_GATEWAY")
 public class User extends AbstractAuditingEntity<Long> implements Serializable {
 
     private static final long serialVersionUID = 1L;

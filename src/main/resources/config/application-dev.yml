@@ -1,16 +1,6 @@
 # ===================================================================
 # Spring Boot configuration for the "dev" profile.
-#
 # This configuration overrides the application.yml file.
-#
-# More information on profiles: https://www.jhipster.tech/profiles/
-# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
-# ===================================================================
-
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
 logging:
@@ -28,12 +18,12 @@ eureka:
       defaultZone: http://admin:${jhipster.registry.password}@localhost:8761/eureka/
 
 management:
-  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
+  zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
   tracing:
     sampling:
-      probability: 1.0 # report 100% of traces
+      probability: 1.0
 
 spring:
   devtools:
@@ -41,45 +31,73 @@ spring:
       enabled: true
       additional-exclude: static/**
     livereload:
-      enabled: false # we use Webpack dev server + BrowserSync for livereload
+      enabled: false
+
   jackson:
     serialization:
       indent-output: true
+
   cloud:
     config:
       uri: http://admin:${jhipster.registry.password}@localhost:8761/config
-      # name of the config server's property source (file.yml) that we want to use
       name: goatBotGateway
       profile: dev
-      label: main # toggle to switch to a different version of the configuration as stored in git
-      # it can be set to any label, branch or commit of the configuration source Git repository
+      label: main
+
+  # ============================================================
+  # Base de datos SQL Server (R2DBC + JDBC)
+  # ============================================================
+
+  r2dbc:
+    url: r2dbc:sqlserver://localhost:1433/goatboot?trustServerCertificate=true&encrypt=false
+    username: sa
+    password: D123s456
+
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost:1433;databaseName=goatboot;encrypt=true;trustServerCertificate=true
+    username: sa
+    password: D123s456
+    hikari:
+      pool-name: Hikari
+      auto-commit: false
+      maximum-pool-size: 5
+
+  #jpa:
+  #database-platform: org.hibernate.dialect.SQLServerDialect
+  #show-sql: true
+  #hibernate:
+  #ddl-auto: none
+  #properties:
+  #hibernate:
+  #format_sql: true
+  #use_sql_comments: true
+
   liquibase:
-    # Remove 'faker' if you do not want the sample data to be loaded automatically
+    enabled: true
     contexts: dev, faker
-    url: jdbc:sqlserver://localhost:1433;database=goatBotGateway;encrypt=false
+    url: jdbc:sqlserver://localhost:1433;databaseName=goatboot;encrypt=true;trustServerCertificate=true
+    user: sa
+    password: D123s456
+
   mail:
     host: localhost
     port: 25
     username:
     password:
+
   messages:
-    cache-duration: PT1S # 1 second, see the ISO 8601 standard
-  r2dbc:
-    url: r2dbc:mssql://localhost:1433/goatBotGateway
-    username: SA
-    password: yourStrong(!)Password
+    cache-duration: PT1S
+
   thymeleaf:
     cache: false
 
 server:
   port: 8080
-  # make sure requests the proxy uri instead of the server one
   forward-headers-strategy: native
 
 # ===================================================================
 # JHipster specific properties
-#
-# Full reference is available at: https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 jhipster:
@@ -90,12 +108,8 @@ jhipster:
       duration-in-seconds: 3600
   registry:
     password: admin
-  # CORS is only enabled by default with the "dev" profile
   cors:
-    # Allow Ionic for JHipster by default (* no longer allowed in Spring Boot 2.4+)
-    # Ports 9061-9069 are allowed for microfrontend development
     allowed-origins: 'http://localhost:8100,https://localhost:8100,http://localhost:9000,https://localhost:9000,http://localhost:9060,https://localhost:9060,http://localhost:9061,https://localhost:9061,http://localhost:9062,https://localhost:9062,http://localhost:9063,https://localhost:9063,http://localhost:9064,https://localhost:9064,http://localhost:9065,https://localhost:9065,http://localhost:9066,https://localhost:9066,http://localhost:9067,https://localhost:9067,http://localhost:9068,https://localhost:9068,http://localhost:9069,https://localhost:9069'
-    # Enable CORS when running in GitHub Codespaces
     allowed-origin-patterns: 'https://*.githubpreview.dev'
     allowed-methods: '*'
     allowed-headers: '*'
@@ -105,27 +119,20 @@ jhipster:
   security:
     authentication:
       jwt:
-        # This token must be encoded using Base64 and be at least 256 bits long (you can type `openssl rand -base64 64` on your command line to generate a 512 bits one)
         base64-secret: NjhhZjg2NzgxNWE4MTllYmIwNjYzNjQ4MDc2NGZmMGNmMTFlYWFhOGRjNmQ3ZGU5ZTAyNDNlODY1NGQyOGQ4NGQ2ZTk1MzcyYTE5MmIxYWJmYWFlMmEzNTE2YTliNmI1NTQwMDU3M2RkMWIyNTc5M2ZjODM3MzAyMzVjYjkyYTM=
-        # Token is valid 24 hours
         token-validity-in-seconds: 86400
         token-validity-in-seconds-for-remember-me: 2592000
-  mail: # specific JHipster mail property, for standard properties see MailProperties
+  mail:
     base-url: http://127.0.0.1:8080
   logging:
-    use-json-format: false # By default, logs are not in Json format
-    logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration
+    use-json-format: false
+    logstash:
       enabled: false
       host: localhost
       port: 5000
       ring-buffer-size: 512
 # ===================================================================
 # Application specific properties
-# Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
 # ===================================================================
 
 # application:

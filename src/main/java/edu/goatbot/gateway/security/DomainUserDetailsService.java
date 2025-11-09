@@ -38,15 +38,19 @@ public class DomainUserDetailsService implements ReactiveUserDetailsService {
         if (new EmailValidator().isValid(login, null)) {
             return userRepository
                 .findOneWithAuthoritiesByEmailIgnoreCase(login)
+                .doOnNext(user -> LOG.debug("Usuario encontrado: {}", user))
+                .switchIfEmpty(Mono.error(new UsernameNotFoundException("Usuario no encontrado")))
                 .switchIfEmpty(Mono.error(new UsernameNotFoundException("User with email " + login + " was not found in the database")))
                 .map(user -> createSpringSecurityUser(login, user));
         }
 
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
-        return userRepository
+        Mono<UserDetails> rs = userRepository
             .findOneWithAuthoritiesByLogin(lowercaseLogin)
+            .doOnNext(user -> LOG.debug("Usuario encontrado: {}", user))
             .switchIfEmpty(Mono.error(new UsernameNotFoundException("User " + lowercaseLogin + " was not found in the database")))
             .map(user -> createSpringSecurityUser(lowercaseLogin, user));
+        return rs.doOnError(e -> LOG.error("❌ Error creando SpringSecurityUser: ", e));
     }
 
     private org.springframework.security.core.userdetails.User createSpringSecurityUser(String lowercaseLogin, User user) {
